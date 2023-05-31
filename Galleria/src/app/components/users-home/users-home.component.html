@@ -1,0 +1,137 @@
+<!-- Option 1: Include in HTML -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+
+<div class="container-fluid">
+    <div class="row justify-content-around p-3 bg-primary bg-gradient text-white">
+        <div class="fs-4 col-6">Users</div>
+        <button class="btn btn-light col-auto " data-bs-toggle="modal" data-bs-target="#UserInfoModal">Add User</button>
+    </div>
+</div>
+
+<div class="container">
+    <table class="table table-striped col-12">
+        <thead>
+            <tr class="row">
+                <th class="col-2">Name</th>
+                <th class="col-3">Email</th>
+                <th class="col-3">Number</th>
+                <th class="col-2">Address</th>
+                <th class="col-1"></th>
+                <th class="col-1"></th>
+            </tr>
+        </thead>
+        <tbody class="table-primary col-12" *ngIf="Users; else loadingUsers">
+            <tr *ngFor="let user of Users" class="row">
+                <td class="col-2" routerLink="users/{{user.id}}">{{user.name}}</td>
+                <td class="col-3" routerLink="users/{{user.id}}"> {{user.email}}</td>
+                <td class="col-3" routerLink="users/{{user.id}}">{{user.phone}}</td>
+                <td class="col-2" routerLink="users/{{user.id}}">
+                    {{user.address.street}},{{user.address.suite}},{{user.address.city}}</td>
+                <td class="col-1"><i class="bi bi-pencil-square btn border-0 fs-5 col-1 text-primary"
+                        data-bs-toggle="modal" data-bs-target="#UserInfoModal" (click)="SelectedUpdate(user)"></i>
+                </td>
+                <td class="col-1"><i class="bi bi-person-x-fill btn border-0 fs-5 col-1 text-danger"
+                        data-bs-toggle="modal" data-bs-target="#deleteModal" (click)="SelectedDelete(user)"></i></td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<ng-template #loadingUsers>
+
+    <div class="text-center text-primary fs-4 my-5">
+        Loading...
+        <div class="spinner-grow" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</ng-template>
+
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <!--  -->
+        <div class="modal-content" *ngIf="UserToDelete">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Confirmation</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Do You Want To Delete {{UserToDelete.name}} ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                <button type="button" class="btn btn-primary" (click)="DeleteUser()"
+                    data-bs-dismiss="modal">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="UserInfoModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">User Information</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="clearInputs()"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="floatingInputName" placeholder=" " #newName
+                        [(ngModel)]="Username">
+                    <label for="floatingInputName">Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="floatingInputEmail" placeholder="name@example.com"
+                        #newEmail required [(ngModel)]="Useremail">
+                    <label for="floatingInputEmail">Email address</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="tel" class="form-control" id="floatingInputPhone" placeholder="ex: 01xxxxxxxxx"
+                        #newPhone [(ngModel)]="Userphone">
+                    <label for="floatingInputPhone">Phone</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <span class="input-group-text mb-2">Address</span>
+                    <div class="row g-3">
+                        <div class="col-sm">
+                            <input type="text" class="form-control" placeholder="Street" aria-label="Street" #newStreet
+                                [(ngModel)]="Userstreet">
+                        </div>
+                        <div class="col-sm">
+                            <input type="text" class="form-control" placeholder="Suite" aria-label="Suite" #newSuite
+                                [(ngModel)]="Usersuite">
+                        </div>
+                        <div class="col-sm">
+                            <input type="text" class="form-control" placeholder="City" aria-label="City" #newCity
+                                [(ngModel)]="Usercity">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    (click)="clearInputs()" #closeBtn >Close</button>
+                <button type="button" class="btn btn-primary"
+                    (click)="Validate(newName.value,newEmail.value,newPhone.value,newStreet.value,newSuite.value,newCity.value)">Save</button>
+
+            </div>
+
+        </div>
+    </div>
+</div>

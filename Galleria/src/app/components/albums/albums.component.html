@@ -1,0 +1,32 @@
+<div class="container-fluid">
+    <div class="row justify-content-center p-2 bg-primary bg-gradient text-white" *ngIf="user; else loadingUser">
+        <div class="border-end col-sm-3 col-3 text-wrap">{{user.name}}</div>
+        <div class="border-end col-sm-3 col-6 text-wrap">{{user.email}} <br> {{user.phone}}</div>
+        <div class="col-3 text-wrap">Address <br> {{user.address.street}}, {{user.address.suite}}, {{user.address.city}}
+        </div>
+    </div>
+</div>
+<ng-template #loadingUser>
+    <div class="text-center text-primary fs-4 my-5">
+        Loading...
+        <div class="spinner-grow" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="spinner-grow" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</ng-template>
+
+<h2 class="text-center text-primary my-3" *ngIf="user">{{user.name}} Albums </h2>
+
+<div class="container-fluid row justify-content-center ">
+    <div class="card col-3 m-2 btn btn-light text-primary" style="width: 18rem;" *ngFor="let album of UserAlbums">
+        <div class="card-body" routerLink="albums/{{album.id}}" >
+            <h5 class=" card-title">{{album.title}}</h5>
+        </div>
+    </div>
+</div>
